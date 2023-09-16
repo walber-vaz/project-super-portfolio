@@ -42,41 +42,7 @@ class CertifyingInstitutionViewSet(viewsets.ModelViewSet):
     queryset = CertifyingInstitution.objects.all()
     serializer_class = CertifyingInstitutionSerializer
 
-    def get_permissions(self):
-        if self.request.method == "GET":
-            return [AllowAny()]
-        return [IsAuthenticated()]
-
-    def retrieve(self, request, *args, **kwargs):
-        if request.method == "GET":
-            kwargs.get("pk")
-            instituicao = self.get_object()
-
-            return render(
-                request,
-                "profile_detail.html",
-                {"certifying_institution": instituicao},
-            )
-        return super().retrieve(request, *args, **kwargs)
-
 
 class CertificateViewSet(viewsets.ModelViewSet):
     queryset = Certificate.objects.all()
     serializer_class = CertificateSerializer
-
-    def get_permissions(self):
-        if self.request.method == "GET":
-            return [AllowAny()]
-        return [IsAuthenticated()]
-
-    def retrieve(self, request, *args, **kwargs):
-        if request.method == "GET":
-            kwargs.get("pk")
-            certificado = self.get_object()
-
-            return render(
-                request,
-                "profile_detail.html",
-                {"certificate": certificado},
-            )
-        return super().retrieve(request, *args, **kwargs)
