@@ -1,5 +1,3 @@
-from collections import OrderedDict
-
 from rest_framework import serializers
 
 from .models import Certificate, CertifyingInstitution, Profile, Project
@@ -8,7 +6,7 @@ from .models import Certificate, CertifyingInstitution, Profile, Project
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = "__all__"
+        fields = '__all__'
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -23,33 +21,29 @@ class CertificateSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class WithoutCertifyingInstitutionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Certificate
+        fields = ['id', 'name', 'timestamp']
+
+
 class CertifyingInstitutionSerializer(serializers.ModelSerializer):
-    certificates = CertificateSerializer(many=True, required=False)
+    certificates = WithoutCertifyingInstitutionSerializer(many=True)
 
     class Meta:
         model = CertifyingInstitution
-        fields = '__all__'
-
-    def to_representation(self, instance):
-        data = OrderedDict()
-        data['id'] = instance.id
-        data['name'] = instance.name
-        data['url'] = instance.url
-        data['certificates'] = CertificateSerializer(
-            instance.certificate_set.all(), many=True
-        ).data
-
-        return data
+        fields = ['id', 'name', 'url', 'certificates']
 
     def create(self, validated_data):
         certificates_data = validated_data.pop('certificates')
-        certifying_institution = CertifyingInstitution.objects.create(
+        new_certifying_institution = CertifyingInstitution.objects.create(
             **validated_data
         )
-        for certificate_data in certificates_data:
-            Certificate.objects.create(
-                certifying_institution=certifying_institution,
-                **certificate_data,
-            )
-
-        return certifying_institution
+        for certificate in certificates_data:
+            new_certificate = {
+                'name': certificate['name'],
+                'certifying_institution': new_certifying_institution,
+                'profiles': [],
+            }
+            CertificateSerializer().create(new_certificate)
+        return new_certifying_institution

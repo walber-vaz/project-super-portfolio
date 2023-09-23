@@ -14,10 +14,6 @@ router.register(r'profiles/<int: id>', ProfileViewSet)
 router.register(r'projects', ProjectViewSet)
 router.register(r'projects/<int: id>', ProjectViewSet)
 router.register(r'certifying-institutions', CertifyingInstitutionViewSet)
-router.register(
-    r'certifying-institutions/<int: id>', CertifyingInstitutionViewSet
-)
 router.register(r'certificates', CertificateViewSet)
-router.register(r'certificates/<int: id>', CertificateViewSet)
 
 urlpatterns = [path('', include(router.urls))]

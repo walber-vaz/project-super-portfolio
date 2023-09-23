@@ -4,10 +4,17 @@ from django.db import models
 
 class Profile(models.Model):
     name = models.CharField(
-        max_length=100, validators=[MaxLengthValidator(limit_value=100)]
+        max_length=100,
+        validators=[MaxLengthValidator(limit_value=100)],
+        null=False,
+        blank=False,
     )
-    github = models.URLField(validators=[URLValidator()])
-    linkedin = models.URLField(validators=[URLValidator()])
+    github = models.URLField(
+        validators=[URLValidator()], null=False, blank=False
+    )
+    linkedin = models.URLField(
+        validators=[URLValidator()], null=False, blank=False
+    )
     bio = models.TextField(
         null=False,
         blank=False,
@@ -20,19 +27,30 @@ class Profile(models.Model):
 
 class Project(models.Model):
     name = models.CharField(
-        max_length=50, validators=[MaxLengthValidator(limit_value=50)]
+        max_length=50,
+        validators=[MaxLengthValidator(limit_value=50)],
+        null=False,
+        blank=False,
     )
     description = models.TextField(
         null=False,
         blank=False,
         validators=[MaxLengthValidator(limit_value=500)],
     )
-    github_url = models.URLField(validators=[URLValidator()])
+    github_url = models.URLField(
+        validators=[URLValidator()], null=False, blank=False
+    )
     keyword = models.CharField(
-        max_length=50, validators=[MaxLengthValidator(limit_value=50)]
+        max_length=50,
+        validators=[MaxLengthValidator(limit_value=50)],
+        null=False,
+        blank=False,
     )
     key_skill = models.CharField(
-        max_length=50, validators=[MaxLengthValidator(limit_value=50)]
+        max_length=50,
+        validators=[MaxLengthValidator(limit_value=50)],
+        null=False,
+        blank=False,
     )
     profile = models.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name='projects'
@@ -44,9 +62,12 @@ class Project(models.Model):
 
 class CertifyingInstitution(models.Model):
     name = models.CharField(
-        max_length=100, validators=[MaxLengthValidator(limit_value=100)]
+        max_length=100,
+        validators=[MaxLengthValidator(limit_value=100)],
+        null=False,
+        blank=False,
     )
-    url = models.URLField(validators=[URLValidator()])
+    url = models.URLField(validators=[URLValidator()], null=False, blank=False)
 
     def __str__(self):
         return self.name
@@ -54,10 +75,15 @@ class CertifyingInstitution(models.Model):
 
 class Certificate(models.Model):
     name = models.CharField(
-        max_length=100, validators=[MaxLengthValidator(limit_value=100)]
+        max_length=100,
+        validators=[MaxLengthValidator(limit_value=100)],
+        null=False,
+        blank=False,
     )
     certifying_institution = models.ForeignKey(
-        CertifyingInstitution, on_delete=models.CASCADE
+        CertifyingInstitution,
+        on_delete=models.CASCADE,
+        related_name='certificates',
     )
     timestamp = models.DateTimeField(auto_now_add=True)
     profiles = models.ManyToManyField(Profile, related_name='certificates')
