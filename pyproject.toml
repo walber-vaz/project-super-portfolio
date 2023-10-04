@@ -21,7 +21,7 @@ dependencies = [
     "Markdown==3.4.4",
     "markdown-it-py==2.2.0",
     "mysqlclient==2.2.0",
-    "Pillow==10.0.0",
+    "Pillow==10.0.1",
     "whitenoise==6.5.0",
 ]
 
