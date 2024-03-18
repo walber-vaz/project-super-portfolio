@@ -12,7 +12,7 @@ description = ""
 readme = "readme.md"
 requires-python = ">=3.10"
 dependencies = [
-    "Django==4.2.7",
+    "Django==4.2.11",
     "django-extensions==3.2.3",
     "django-filter==23.2",
     "django-mysql==4.11.0",
